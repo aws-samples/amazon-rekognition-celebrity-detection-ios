@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="AWSRekognitionStarterApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView autoresizesSubviews="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jeff_portrait.png" translatesAutoresizingMaskIntoConstraints="NO" id="HqC-i2-tXx">
+                                <rect key="frame" x="16" y="20" width="343" height="627"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QaO-vh-z8p" userLabel="CameraButton">
+                                <rect key="frame" x="157.5" y="450" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="7wa-yB-VsP"/>
+                                    <constraint firstAttribute="width" constant="60" id="tWW-YR-p6G"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="CameraIcon"/>
+                                <connections>
+                                    <action selector="CameraOpen:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vWG-Rn-y9n"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IGQ-5G-I6X" userLabel="PhotoLibraryButton">
+                                <rect key="frame" x="167.5" y="540" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="hy4-IA-lU0"/>
+                                    <constraint firstAttribute="width" constant="40" id="mFi-b1-fXC"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="PhotoLibraryIcon"/>
+                                <connections>
+                                    <action selector="PhotoLibraryOpen:" destination="BYZ-38-t0r" eventType="touchUpInside" id="O92-eB-PQD"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="QaO-vh-z8p" secondAttribute="bottom" constant="157" id="5Al-CP-RyK"/>
+                            <constraint firstItem="QaO-vh-z8p" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="7NH-Yn-lzf"/>
+                            <constraint firstItem="IGQ-5G-I6X" firstAttribute="top" secondItem="QaO-vh-z8p" secondAttribute="bottom" constant="30" id="AnS-9Z-qUB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="HqC-i2-tXx" secondAttribute="trailing" constant="16" id="Pdt-GS-ZvS"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="HqC-i2-tXx" secondAttribute="bottom" constant="20" id="PlH-42-sn9"/>
+                            <constraint firstItem="HqC-i2-tXx" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="VL9-6Y-8d8"/>
+                            <constraint firstItem="IGQ-5G-I6X" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="bH3-nE-Hth"/>
+                            <constraint firstItem="HqC-i2-tXx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="uAO-W9-iAU"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="CelebImageView" destination="HqC-i2-tXx" id="rGw-Eb-x7k"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="CameraIcon" width="80" height="80"/>
+        <image name="PhotoLibraryIcon" width="80" height="80"/>
+        <image name="jeff_portrait.png" width="484" height="323"/>
+    </resources>
+</document>
