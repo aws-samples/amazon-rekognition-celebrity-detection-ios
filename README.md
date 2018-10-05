@@ -187,7 +187,7 @@ if ((result!.celebrityFaces?.count)! > 0){
                 }
                 //If there are no links direct them to a search page
                 else{
-                    celebrityInImage.infoLink = "www.google.com/search?q="+celebrityInImage.name
+                    celebrityInImage.infoLink = "https://www.imdb.com/search/name-text?bio="+celebrityInImage.name
                 }
                 //Update the celebrity links map that we will use next to creat buttons
                 self?.infoLinksMap[index] = "https://"+celebFace.urls![0]
