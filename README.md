@@ -91,11 +91,11 @@ Mobile SDK in the app.
 1. In the app’s didFinishLaunchingWithOptions function, add the following lines: <br>
 `let credentialsProvider = AWSCognitoCredentialsProvider(
             regionType: .USEast1,
-            identityPoolId: "<your-cognito-pool-id>")
-let configuration = AWSServiceConfiguration(
+            identityPoolId: "<your-cognito-pool-id>")`
+`let configuration = AWSServiceConfiguration(
             region: .USEast1,
-            credentialsProvider: credentialsProvider)
-AWSServiceManager.default().defaultServiceConfiguration = configuration`
+            credentialsProvider: credentialsProvider)`
+`AWSServiceManager.default().defaultServiceConfiguration = configuration`
 
 In the steps here, we created a credentialsProvider object and assigned the
 Amazon Cognito identity pool that we created. Then we created an
@@ -119,11 +119,13 @@ Amazon Rekognition API. <br>
 
 1. Go to the sendImageToRekognition function, and add the following lines
 after the snippet to 'Delete older labels or buttons': <br>
-`rekognitionObject = AWSRekognition.default()
+```
+rekognitionObject = AWSRekognition.default()
 let celebImageAWS = AWSRekognitionImage()
 celebImageAWS?.bytes = celebImageData
 let celebRequest = AWSRekognitionRecognizeCelebritiesRequest()
-celebRequest?.image = celebImageAWS`
+celebRequest?.image = celebImageAWS
+```
 
 In this code, we first initialize the rekognitionObject with a default configuration. We
 then create an instance of AWSRekognitionImage and assign the bytes property,
@@ -136,7 +138,8 @@ identify celebrities.
 
 1. Add the following lines to the sendImageToRekognition function after the
 lines in the previous step: <br>
-`rekognitionObject?.recognizeCelebrities(celebRequest!){
+```
+rekognitionObject?.recognizeCelebrities(celebRequest!){
     (result, error) in
     if error != nil{
         print(error!)
@@ -148,7 +151,8 @@ lines in the previous step: <br>
     else{
         print("No result")
     }
-}`
+}
+```
 
 Here, we passed the AWSRekognitionRecognizeCelebritiesRequest from
 the previous step to the Rekognition recognizeCelebrities API method.
@@ -156,14 +160,14 @@ the previous step to the Rekognition recognizeCelebrities API method.
 1. Inside the if statement for `result != nil`, add the following lines to extract
 celebrities and faces from the Amazon Rekognition response. Review the
 code comments to get a better understanding of each task. <br>
-
-`//1. First we check if there are any celebrities in the response 
-if ((result!.celebrityFaces?.count)! > 0){`
+```
+//1. First we check if there are any celebrities in the response 
+if ((result!.celebrityFaces?.count)! > 0){
 
     //2. Celebrities were found. Lets iterate through all of them 
     for (index, celebFace) in result!.celebrityFaces!.enumerated(){
         //Check the confidence value returned by the API for each celebirty identified 
-        if(celebFace.matchConfidence!.intValue > 50){ //Adjust the confidence value to whatever you are comfortable with`
+        if(celebFace.matchConfidence!.intValue > 50){ //Adjust the confidence value to whatever you are comfortable with
 
             //We are confident this is celebrity. Lets point them out in the image using the main thread                 
             DispatchQueue.main.async {
@@ -199,18 +203,19 @@ if ((result!.celebrityFaces?.count)! > 0){`
         }
         
     }
-`}`
-`//If there were no celebrities in the image, lets check if there were any faces (who, granted, could one day become celebrities)
+}
+//If there were no celebrities in the image, lets check if there were any faces (who, granted, could one day become celebrities)
 else if ((result!.unrecognizedFaces?.count)! > 0){
 //Faces are present. Point them out in the Image (left as an exercise for the reader)
-    /*`
+    /*
         
     */
-`}
+}
 else{
 //No faces were found (presumably no people were found either)
     print("No faces in this pic")
-}`
+}
+```
 
 Let's quickly walk through what we did above:
 
