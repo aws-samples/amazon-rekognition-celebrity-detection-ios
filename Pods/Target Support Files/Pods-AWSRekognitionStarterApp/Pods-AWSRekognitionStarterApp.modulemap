@@ -1,6 +1,0 @@
-framework module Pods_AWSRekognitionStarterApp {
-  umbrella header "Pods-AWSRekognitionStarterApp-umbrella.h"
-
-  export *
-  module * { export * }
-}
