@@ -88,7 +88,7 @@ Mobile SDK in the app.
 1. Go to AppDelegate.swift.
 1. Add the following line at the top:
 `import AWSCore`
-1. In the app’s didFinishLaunchingWithOptions function, add the following lines:
+1. In the app’s didFinishLaunchingWithOptions function, add the following lines: <br>
 `let credentialsProvider = AWSCognitoCredentialsProvider(
             regionType: .USEast1,
             identityPoolId: "<your-cognito-pool-id>")
@@ -97,7 +97,7 @@ let configuration = AWSServiceConfiguration(
             credentialsProvider: credentialsProvider)
 AWSServiceManager.default().defaultServiceConfiguration = configuration`
 
-In the previous steps, we created a credentialsProvider object and assigned the
+In the steps here, we created a credentialsProvider object and assigned the
 Amazon Cognito identity pool that we created. Then we created an
 AWSServiceConfiguration object with these credentials. Finally, we set the default
 AWS configuration for the AWS Mobile SDK in this app to the
@@ -110,15 +110,15 @@ This section is at the core of what we’re trying to accomplish—talking to th
 Amazon Rekognition API to detect faces and celebrities in images that are captured
 by the app.
 1. At the top of the ViewController.swift file, add the import line for
-Amazon Rekognition:
+Amazon Rekognition: <br>
 `import AWSRekognition`
 
 1. Create a class variable of type AWSRekognition. We use this to talk to the
-Amazon Rekognition API.
+Amazon Rekognition API. <br>
 `var rekognitionObject:AWSRekognition?`
 
 1. Go to the sendImageToRekognition function, and add the following lines
-after the snippet to 'Delete older labels or buttons':
+after the snippet to 'Delete older labels or buttons': <br>
 `rekognitionObject = AWSRekognition.default()
 let celebImageAWS = AWSRekognitionImage()
 celebImageAWS?.bytes = celebImageData
@@ -135,14 +135,13 @@ It’s now time to send this image data to Amazon Rekognition to detect faces an
 identify celebrities.
 
 1. Add the following lines to the sendImageToRekognition function after the
-lines in the previous step:
+lines in the previous step: <br>
 `rekognitionObject?.recognizeCelebrities(celebRequest!){
     (result, error) in
     if error != nil{
         print(error!)
         return
-    }
-    
+    }  
     if result != nil{
         print(result!)
     }
@@ -154,19 +153,18 @@ lines in the previous step:
 Here, we passed the AWSRekognitionRecognizeCelebritiesRequest from
 the previous step to the Rekognition recognizeCelebrities API method.
 
-1. Inside the if statement for result != nil, add the following lines to extract
+1. Inside the if statement for `result != nil`, add the following lines to extract
 celebrities and faces from the Amazon Rekognition response. Review the
-code comments to get a better understanding of each task.
+code comments to get a better understanding of each task. <br>
 
 `//1. First we check if there are any celebrities in the response 
-if ((result!.celebrityFaces?.count)! > 0){
-                    
+if ((result!.celebrityFaces?.count)! > 0){`
+
     //2. Celebrities were found. Lets iterate through all of them 
     for (index, celebFace) in result!.celebrityFaces!.enumerated(){
-
         //Check the confidence value returned by the API for each celebirty identified 
-        if(celebFace.matchConfidence!.intValue > 50){ //Adjust the confidence value to whatever you are comfortable with 
-            
+        if(celebFace.matchConfidence!.intValue > 50){ //Adjust the confidence value to whatever you are comfortable with`
+
             //We are confident this is celebrity. Lets point them out in the image using the main thread                 
             DispatchQueue.main.async {
                 [weak self] in
@@ -201,14 +199,14 @@ if ((result!.celebrityFaces?.count)! > 0){
         }
         
     }
-}
-//If there were no celebrities in the image, lets check if there were any faces (who, granted, could one day become celebrities)
+`}`
+`//If there were no celebrities in the image, lets check if there were any faces (who, granted, could one day become celebrities)
 else if ((result!.unrecognizedFaces?.count)! > 0){
 //Faces are present. Point them out in the Image (left as an exercise for the reader)
-    /*
+    /*`
         
     */
-}
+`}
 else{
 //No faces were found (presumably no people were found either)
     print("No faces in this pic")
