@@ -1,0 +1,120 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: "CloudFormation Stack to create Amazon Cognito Federated Identity Pool, IAM Roles, and Policies for Celebrity iOS app using Amazon Rekognition"
+
+Resources:
+  # Creates a new Amazon Cognito Federeated Identity pool
+  IdentityPool:
+    Type: "AWS::Cognito::IdentityPool"
+    Properties:
+      IdentityPoolName: "CelebrityRekognition"
+      AllowUnauthenticatedIdentities: true
+
+  # Create an IAM Cognito unauthenticated role for users to call specific AWS resources
+  UnAuthenticatedRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal: 
+              Federated: "cognito-identity.amazonaws.com"
+            Action: 
+              - "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals: 
+                "cognito-identity.amazonaws.com:aud": !Ref IdentityPool
+              "ForAnyValue:StringLike":
+                "cognito-identity.amazonaws.com:amr": unauthenticated
+      Policies:
+        - PolicyName: "CognitoUnAuthenticatedCelebrityRekognitionPolicy"
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - Effect: "Allow"
+                Action:
+                  - "mobileanalytics:PutEvents"
+                  - "rekognition:CompareFaces"
+                  - "rekognition:DetectFaces"
+                  - "rekognition:DetectLabels"
+                  - "rekognition:ListCollections"
+                  - "rekognition:ListFaces"
+                  - "rekognition:SearchFaces"
+                  - "rekognition:SearchFacesByImage"
+                  - "rekognition:DetectText"
+                  - "rekognition:GetCelebrityInfo"
+                  - "rekognition:RecognizeCelebrities"
+                  - "rekognition:DetectModerationLabels"
+                  - "rekognition:GetLabelDetection"
+                  - "rekognition:GetFaceDetection"
+                  - "rekognition:GetContentModeration"
+                  - "rekognition:GetPersonTracking"
+                  - "rekognition:GetCelebrityRecognition"
+                  - "rekognition:GetFaceSearch"
+                  - "rekognition:DescribeStreamProcessor"
+                  - "rekognition:ListStreamProcessors"
+                Resource: "*"
+
+  # Create an IAM Cognito authenticated role for users to access AWS resources. Same perms as Unauth Role for now.
+  AuthenticatedRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal: 
+              Federated: "cognito-identity.amazonaws.com"
+            Action: 
+              - "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals: 
+                "cognito-identity.amazonaws.com:aud": !Ref IdentityPool
+              "ForAnyValue:StringLike":
+                "cognito-identity.amazonaws.com:amr": authenticated
+      Policies:
+        - PolicyName: "CognitoAuthenticatedCelebrityRekognitionPolicy"
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - Effect: "Allow"
+                Action:
+                  - "mobileanalytics:PutEvents"
+                  - "rekognition:CompareFaces"
+                  - "rekognition:DetectFaces"
+                  - "rekognition:DetectLabels"
+                  - "rekognition:ListCollections"
+                  - "rekognition:ListFaces"
+                  - "rekognition:SearchFaces"
+                  - "rekognition:SearchFacesByImage"
+                  - "rekognition:DetectText"
+                  - "rekognition:GetCelebrityInfo"
+                  - "rekognition:RecognizeCelebrities"
+                  - "rekognition:DetectModerationLabels"
+                  - "rekognition:GetLabelDetection"
+                  - "rekognition:GetFaceDetection"
+                  - "rekognition:GetContentModeration"
+                  - "rekognition:GetPersonTracking"
+                  - "rekognition:GetCelebrityRecognition"
+                  - "rekognition:GetFaceSearch"
+                  - "rekognition:DescribeStreamProcessor"
+                  - "rekognition:ListStreamProcessors"
+                Resource: "*"
+  
+  # Associates the unauthenticated and authenticated IAM roles with the newly created Identity Pool
+  IdentityPoolRoleMapping:
+    Type: "AWS::Cognito::IdentityPoolRoleAttachment"
+    Properties:
+      IdentityPoolId: !Ref IdentityPool
+      Roles:
+        unauthenticated: !GetAtt UnAuthenticatedRole.Arn
+        authenticated: !GetAtt AuthenticatedRole.Arn
+
+# Use these values to cut from the CloudFormation Console and paste into our service configuration in the AppDelegate of our Celebrity iOS app
+Outputs:
+  identityPoolId:
+    Value: !Ref IdentityPool
+  unauthRoleArn:
+    Value: !GetAtt UnAuthenticatedRole.Arn
+  authRoleArn:
+    Value: !GetAtt AuthenticatedRole.Arn
